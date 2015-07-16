@@ -3,9 +3,11 @@
 package runcmd
 
 var testdata2 = []cnl{
-	{command: &Command{},
+	{command: &Command{
+		Logfile: "out.log",
+	},
 		name:    "",
-		logfile: "",
+		logfile: "out.log",
 	},
 	{command: &Command{
 		CommandLine: `echo "home=%HOME%"`,
