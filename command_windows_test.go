@@ -14,6 +14,6 @@ var testdata2 = []cnl{
 		UseEnv:      true,
 	},
 		name:    "cmd-c-echo-home-home",
-		logfile: "cmd-c-echo-home-home",
+		logfile: "runcmd-cmd-c-echo-home-home.log",
 	},
 }
