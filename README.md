@@ -15,23 +15,36 @@ import (
     "github.com/enr/runcmd"
 )
 ```
+You can use this library in two ways.
 
-Usage:
+Run a command, wait for it to complete and get a result:
 
 ```Go
-executable := "ls"
+executable := "/usr/bin/ls"
 args := []string{"-al"}
 command := &runcmd.Command{
     Exe:  executable,
     Args: args,
 }
 res := command.Run()
-if !res.Success() {
-    fmt.Printf("error executing %s. Exit code %d", command, res.ExitStatus())
+if res.Success() {
     fmt.Printf("standard output: %s", res.Stdout().String())
+} else {
+    fmt.Printf("error executing %s. Exit code %d", command, res.ExitStatus())
     fmt.Printf("error output: %s", res.Stderr().String())
     fmt.Printf("the error: %v", res.Error())
 }
+```
+
+Start a command as a process. In Unix systems this process will survive to the parent.
+
+```Go
+logFile := cmd.GetLogfile()
+// maybe you want to follow logs...
+t, _ := tail.TailFile(logFile, tail.Config{Follow: true})
+go func() {
+    cmd.Start()
+}()
 ```
 
 License

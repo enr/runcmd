@@ -3,12 +3,17 @@ package runcmd
 import (
 	"bytes"
 	"fmt"
+	"os"
 	"os/exec"
+	"path"
 	"path/filepath"
 	"strings"
+
+	"github.com/extemporalgenome/slug"
 )
 
 type Command struct {
+	Name string
 	// the executable
 	Exe string
 	// args passed to executable
@@ -24,6 +29,8 @@ type Command struct {
 	UseProfile bool // dovrebbe essere Profile string : path
 	// only for *nix: if true .env file in the working dir is used to initialize env vars
 	UseEnv bool // dovrebbe essere EnvFile string: path
+	// used only if command is started as process
+	Logfile string
 }
 
 func (c *Command) String() string {
@@ -38,6 +45,28 @@ func (c *Command) FullCommand() string {
 		c.useShell()
 	}
 	return strings.TrimSpace(c.Exe + " " + strings.Join(c.Args, " "))
+}
+
+func (c *Command) GetName() string {
+	if c.Name != "" {
+		return c.Name
+	}
+	// no := []string{` `, `/`, `\`, `:`}
+	// name := c.FullCommand()
+	// for _, s := range no {
+	// 	name = strings.Replace(name, s, "-", -1)
+	// }
+	// return name
+	return slug.Slug(c.FullCommand())
+}
+
+func (c *Command) GetLogfile() string {
+	if c.Logfile != "" {
+		return c.Logfile
+	}
+	logname := fmt.Sprintf("runcmd-%s.log", c.GetName())
+	fullpath := path.Join(os.TempDir(), logname)
+	return fullpath
 }
 
 // Run starts the specified command and waits for it to complete.
