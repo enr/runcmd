@@ -6,7 +6,7 @@ Runcmd
 
 Should be a Go library to execute external commands.
 
-Nothing to see here now.
+**Nothing to see here now.**
 
 Import the library:
 
@@ -39,6 +39,10 @@ if res.Success() {
 Start a command as a process. In Unix systems this process will survive to the parent.
 
 ```Go
+executable := "/usr/local/bin/start-server"
+command := &runcmd.Command{
+    Exe:  executable,
+}
 logFile := cmd.GetLogfile()
 // maybe you want to follow logs...
 t, _ := tail.TailFile(logFile, tail.Config{Follow: true})
