@@ -13,7 +13,15 @@ var testdata2 = []cnl{
 		CommandLine: `echo "home=%HOME%"`,
 		UseEnv:      true,
 	},
-		name:    "cmd-c-echo-home-home",
-		logfile: "runcmd-cmd-c-echo-home-home.log",
+		name:    "echo-home-home",
+		logfile: "runcmd-echo-home-home.log",
+	},
+	{command: &Command{
+		Exe:    `c:\bin\myapp.exe`,
+		Args:   []string{"-a", `"say hello!"`},
+		UseEnv: true,
+	},
+		name:    "c-bin-myapp-exe-a-say-hello",
+		logfile: "runcmd-c-bin-myapp-exe-a-say-hello.log",
 	},
 }

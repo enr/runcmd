@@ -51,13 +51,19 @@ func (c *Command) GetName() string {
 	if c.Name != "" {
 		return c.Name
 	}
+	var dirtyCommandName string
+	if c.CommandLine != "" {
+		dirtyCommandName = c.CommandLine
+	} else {
+		dirtyCommandName = fmt.Sprintf("%s%v", c.Exe, c.Args)
+	}
 	// no := []string{` `, `/`, `\`, `:`}
 	// name := c.FullCommand()
 	// for _, s := range no {
 	// 	name = strings.Replace(name, s, "-", -1)
 	// }
 	// return name
-	return slug.Slug(c.FullCommand())
+	return slug.Slug(dirtyCommandName)
 }
 
 func (c *Command) GetLogfile() string {
