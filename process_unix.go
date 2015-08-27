@@ -12,7 +12,7 @@ import (
 // You do that by setting Setpgid to true in the Cmd.SysProcAttr field.
 // From Golang docs:
 // 	Setpgid: Set process group ID to new pid (SYSV setpgrp)
-func start(cmd *exec.Cmd) error {
+func start(cmd *exec.Cmd) (int, error) {
 	keepAliveChild := true
 	if cmd.SysProcAttr == nil {
 		cmd.SysProcAttr = &syscall.SysProcAttr{
@@ -22,5 +22,9 @@ func start(cmd *exec.Cmd) error {
 		cmd.SysProcAttr.Setpgid = keepAliveChild
 	}
 	err := cmd.Start()
-	return err
+	if err != nil {
+		return 0, err
+	}
+	process := cmd.Process
+	return process.Pid, nil
 }

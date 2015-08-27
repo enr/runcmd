@@ -5,8 +5,7 @@ import (
 	"path/filepath"
 )
 
-// Start start a process wihout waiting
-// in unix fork
+// Start start a process without waiting
 func (c *Command) Start() error {
 
 	cmd, err := c.buildCmd()
@@ -27,9 +26,11 @@ func (c *Command) Start() error {
 		cmd.Env = c.Env.asArray()
 	}
 
-	if err := start(cmd); err != nil {
+	pid, err := start(cmd)
+	if err != nil {
 		return err
 	}
+	c.Pid = pid
 	return nil
 }
 

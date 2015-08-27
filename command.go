@@ -31,6 +31,8 @@ type Command struct {
 	UseEnv bool // dovrebbe essere EnvFile string: path
 	// used only if command is started as process
 	Logfile string
+	// the PID of the underlying process
+	Pid int
 }
 
 func (c *Command) String() string {
