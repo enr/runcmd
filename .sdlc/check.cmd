@@ -21,7 +21,9 @@ echo module_name   %module_name%
 echo exe_path      %exe_path%
 
 cd %project_dir%
-go test -mod vendor -cover ./...
+
+go test -race ./...
+go test -cover ./...
 
 REM for /f %%x in ('dir /AD /B /S lib') do (
 REM     echo --- %%x

@@ -73,7 +73,8 @@ cd "${PRJ_HOME}"
   # cd "$PRJ_HOME"
   # echo "--- go build"
   # cd "$dir"
-  echo "--- go test -cover ./..."
+  echo "--- go test"
+  go test -race ./...
   go test -cover ./...
 # done
 #

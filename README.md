@@ -1,12 +1,10 @@
 Runcmd
 ======
 
-[![Build Status](https://travis-ci.org/enr/runcmd.png?branch=master)](https://travis-ci.org/enr/runcmd)
-[![Build status](https://ci.appveyor.com/api/projects/status/cklfbhqkoi2356if?svg=true)](https://ci.appveyor.com/project/enr/runcmd)
+![CI Nix](https://github.com/enr/runcmd/workflows/CI%20Nix/badge.svg)
+![CI Windows](https://github.com/enr/runcmd/workflows/CI%20Windows/badge.svg)
 
 Should be a Go library to execute external commands.
-
-**Nothing to see here now.**
 
 Import the library:
 
@@ -43,12 +41,10 @@ executable := "/usr/local/bin/start-server"
 command := &runcmd.Command{
     Exe:  executable,
 }
-logFile := cmd.GetLogfile()
+logFile := command.GetLogfile()
 // maybe you want to follow logs...
 t, _ := tail.TailFile(logFile, tail.Config{Follow: true})
-go func() {
-    cmd.Start()
-}()
+command.Start()
 ```
 
 License
