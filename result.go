@@ -5,18 +5,23 @@ import (
 	"fmt"
 )
 
+// ExecResult is the result of the completed command execution.
 type ExecResult struct {
 	fullCommand string
 	streams     *Streams
 	err         error
 }
 
+// Success true if command completed with no error.
 func (r *ExecResult) Success() bool {
 	return r.err == nil && r.ExitStatus() == 0
 }
+
+// ExitStatus is the command exit.
 func (r *ExecResult) ExitStatus() int {
 	return getExitStatus(r.err)
 }
+
 func (r *ExecResult) String() string {
 	status := "error"
 	if r.Success() {

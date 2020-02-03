@@ -2,7 +2,6 @@ package runcmd
 
 import (
 	"bytes"
-	_ "fmt"
 	"os/exec"
 	"syscall"
 )

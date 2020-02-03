@@ -12,6 +12,7 @@ import (
 	"github.com/extemporalgenome/slug"
 )
 
+// Command is the launched command, it wraps the process.
 type Command struct {
 	Name string
 	// the executable
@@ -31,14 +32,15 @@ type Command struct {
 	UseEnv bool // dovrebbe essere EnvFile string: path
 	// used only if command is started as process
 	Logfile string
-	// the PID of the underlying process
-	Pid int
+	// the underlying process
+	Process *os.Process
 }
 
 func (c *Command) String() string {
 	return fmt.Sprintf("%s# %s", c.WorkingDir, c.FullCommand())
 }
 
+// FullCommand returns the full command line string.
 func (c *Command) FullCommand() string {
 	if c.Exe == "" && c.CommandLine == "" {
 		return ""
@@ -49,6 +51,7 @@ func (c *Command) FullCommand() string {
 	return strings.TrimSpace(c.Exe + " " + strings.Join(c.Args, " "))
 }
 
+// GetName get the name of the command.
 func (c *Command) GetName() string {
 	if c.Name != "" {
 		return c.Name
@@ -68,6 +71,7 @@ func (c *Command) GetName() string {
 	return slug.Slug(dirtyCommandName)
 }
 
+// GetLogfile get the full path to the file containing the process output.
 func (c *Command) GetLogfile() string {
 	if c.Logfile != "" {
 		return c.Logfile
@@ -103,7 +107,7 @@ func (c *Command) Run() *ExecResult {
 
 	if c.UseEnv {
 		flagEnv := filepath.Join(cmd.Dir, ".env")
-		env, _ := ReadEnv(flagEnv)
+		env, _ := readEnv(flagEnv)
 		cmd.Env = env.asArray()
 	} else if len(c.Env) > 0 {
 		cmd.Env = c.Env.asArray()
