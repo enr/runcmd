@@ -1,7 +1,7 @@
 Runcmd
 ======
 
-![CI Nix](https://github.com/enr/runcmd/workflows/CI%20Nix/badge.svg)
+![CI Linux](https://github.com/enr/runcmd/workflows/CI%20Nix/badge.svg)
 ![CI Windows](https://github.com/enr/runcmd/workflows/CI%20Windows/badge.svg)
 
 Should be a Go library to execute external commands.
@@ -15,7 +15,7 @@ import (
 ```
 You can use this library in two ways.
 
-Run a command, wait for it to complete and get a result:
+Run starts the specified command, waits for it to complete and returns a result:
 
 ```Go
 executable := "/usr/bin/ls"
@@ -34,7 +34,7 @@ if res.Success() {
 }
 ```
 
-Start a command as a process. In Unix systems this process will survive to the parent.
+Start starts the specified command but does not wait for it to complete.
 
 ```Go
 executable := "/usr/local/bin/start-server"
@@ -45,6 +45,7 @@ logFile := command.GetLogfile()
 // maybe you want to follow logs...
 t, _ := tail.TailFile(logFile, tail.Config{Follow: true})
 command.Start()
+runningProcess := command.Process
 ```
 
 License
