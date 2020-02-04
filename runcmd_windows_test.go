@@ -16,13 +16,15 @@ type ccli struct {
 }
 
 var testdata = []ccli{
-	{command: &Command{},
-		cli: "",
+	{
+		command: &Command{},
+		cli:     "",
 	},
-	{command: &Command{
-		CommandLine: `echo "home=%HOME%"`,
-		UseEnv:      true,
-	},
+	{
+		command: &Command{
+			CommandLine: `echo "home=%HOME%"`,
+			UseEnv:      true,
+		},
 		cli: `cmd /C echo "home=%HOME%"`,
 	},
 }

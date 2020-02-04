@@ -14,21 +14,24 @@ type ccli struct {
 }
 
 var testdata = []ccli{
-	{command: &Command{},
-		cli: "",
+	{
+		command: &Command{},
+		cli:     "",
 	},
-	{command: &Command{
-		CommandLine: `echo "home=${HOME}"`,
-		UseEnv:      true,
-		ForceShell:  "/bin/dash",
-	},
+	{
+		command: &Command{
+			CommandLine: `echo "home=${HOME}"`,
+			UseEnv:      true,
+			ForceShell:  "/bin/dash",
+		},
 		cli: `/bin/dash -c echo "home=${HOME}"`,
 	},
-	{command: &Command{
-		CommandLine: `echo "home=${HOME}"`,
-		UseProfile:  true,
-		ForceShell:  "/bin/bash",
-	},
+	{
+		command: &Command{
+			CommandLine: `echo "home=${HOME}"`,
+			UseProfile:  true,
+			ForceShell:  "/bin/bash",
+		},
 		cli: `/bin/bash -c . ".profile" 2>/dev/null; echo "home=${HOME}"`,
 	},
 }
@@ -101,6 +104,15 @@ var executions = []commandExecution{
 		success:  true,
 		exitCode: 0,
 		stdout:   "BAR=foo!",
+	},
+	{
+		command: &Command{
+			CommandLine: `BAR=Foo; echo "BAR=${BAR}!"`,
+			ForceShell:  "/bin/bash",
+		},
+		success:  true,
+		exitCode: 0,
+		stdout:   "BAR=Foo!",
 	},
 }
 
