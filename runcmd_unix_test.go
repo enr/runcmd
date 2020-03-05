@@ -152,6 +152,6 @@ func TestWorkingDir(t *testing.T) {
 
 func assertStringContains(t *testing.T, s string, substr string) {
 	if substr != "" && !strings.Contains(s, substr) {
-		t.Fatalf("expected output\n%s\n  does not contain\n%s\n", s, substr)
+		t.Fatalf("output\n%s\n  does not contain\n%s\n", s, substr)
 	}
 }
