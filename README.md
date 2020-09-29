@@ -1,10 +1,9 @@
-Runcmd
-======
+# Runcmd
 
 ![CI Linux](https://github.com/enr/runcmd/workflows/CI%20Nix/badge.svg)
 ![CI Windows](https://github.com/enr/runcmd/workflows/CI%20Windows/badge.svg)
-[![GoDoc](https://godoc.org/github.com/enr/runcmd?status.svg)](https://godoc.org/github.com/enr/runcmd) 
-[![Go Report Card](https://goreportcard.com/badge/github.com/enr/runcmd?branch=master)](https://goreportcard.com/badge/github.com/enr/runcmd) 
+[![GoDoc](https://godoc.org/github.com/enr/runcmd?status.svg)](https://pkg.go.dev/github.com/enr/runcmd)
+[![Go Report Card](https://goreportcard.com/badge/github.com/enr/runcmd)](https://goreportcard.com/report/github.com/enr/runcmd)
 
 Should be a Go library to execute external commands.
 
@@ -54,8 +53,7 @@ command.Start()
 runningProcess := command.Process
 ```
 
-License
--------
+## License
 
 Apache 2.0 - see LICENSE file.
 
