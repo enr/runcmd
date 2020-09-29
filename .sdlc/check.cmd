@@ -1,5 +1,5 @@
 
-REM @echo OFF
+@echo OFF
 SETLOCAL ENABLEEXTENSIONS
 SET "script_name=%~n0"
 SET "script_path=%~0"
@@ -22,10 +22,8 @@ echo exe_path      %exe_path%
 
 cd %project_dir%
 
-echo test______________________
 go test -race ./...
 go test -v -cover ./...
-echo end______________________
 
 REM for /f %%x in ('dir /AD /B /S lib') do (
 REM     echo --- %%x
