@@ -21,5 +21,8 @@ func TestProcess(t *testing.T) {
 		if d.successExpected != ps.Success() {
 			t.Fatalf("%s: expected success=%t but got %t", cmd, d.successExpected, ps.Success())
 		}
+		if d.successExpected && err != nil {
+			t.Fatalf("%s: success expected but got error %v", cmd, err)
+		}
 	}
 }

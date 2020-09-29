@@ -144,5 +144,8 @@ func TestCommandStart(t *testing.T) {
 		if c.success != ps.Success() {
 			t.Fatalf("%s: expected success=%t but got %t", command, c.success, ps.Success())
 		}
+		if c.success && err != nil {
+			t.Fatalf("%s: success expected but got error %v", command, err)
+		}
 	}
 }
