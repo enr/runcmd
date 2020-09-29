@@ -2,6 +2,7 @@ package runcmd
 
 import (
 	"path/filepath"
+	"strings"
 	"testing"
 )
 
@@ -31,4 +32,18 @@ func TestGetLogfile(t *testing.T) {
 			t.Fatalf("%s: logfile base expected %s but got %s", cmd, expected, actual)
 		}
 	}
+}
+
+func TestHugeLogName(t *testing.T) {
+	command :=
+		&Command{
+			Exe:    `/usr/local/bin/myapp`,
+			Args:   []string{"-a", `"a very long command line"`, strings.Repeat("addanotherarg", 20)},
+			UseEnv: true,
+		}
+	lf := command.GetLogfile()
+	if len(lf) > 200 {
+		t.Fatalf("%s: logfile name length too huge: %d \n%s", command, len(lf), lf)
+	}
+
 }

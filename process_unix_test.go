@@ -10,6 +10,13 @@ var testCommands = []testCommand{
 			Env:         Env{"BAR": "foo"},
 			Logfile:     "out.log",
 		},
-		success: true,
+		successExpected: true,
+	},
+	{
+		command: &Command{
+			CommandLine: `command-not-found`,
+			Logfile:     "out.log",
+		},
+		successExpected: false,
 	},
 }

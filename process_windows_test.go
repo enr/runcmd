@@ -9,6 +9,6 @@ var testCommands = []testCommand{
 			Env:         Env{"BAR": "foo"},
 			Logfile:     "out.log",
 		},
-		success: true,
+		successExpected: true,
 	},
 }

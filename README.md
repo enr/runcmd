@@ -51,6 +51,6 @@ runningProcess := command.Process
 License
 -------
 
-Mozilla Public License Version 2.0 - see LICENSE file.
+Apache 2.0 - see LICENSE file.
 
 Copyright 2015 runcmd contributors
