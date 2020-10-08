@@ -18,11 +18,11 @@ echo "git message ${git_message}"
 source "${SDLC_DIR}/config"
 app_name="${REPO_NAME}"
 
-# LIB_DIR="${PRJ_HOME}/lib"
-# CMDS_DIR="${PRJ_HOME}/cmd"
-#
-# BIN_DIR="${PRJ_HOME}/bin"
-# [[ -d "${BIN_DIR}" ]] && rm -r "${BIN_DIR}"
+LIB_DIR="${PRJ_HOME}/lib"
+CMDS_DIR="${PRJ_HOME}/cmd"
+
+BIN_DIR="${PRJ_HOME}/bin"
+[[ -d "${BIN_DIR}" ]] && rm -r "${BIN_DIR}"
 
 # Ensure GOPATH is on PATH. (Needed from Go tools).
 # If GOPATH is defined assume it is on $PATH
@@ -53,6 +53,11 @@ hash gocyclo 2>/dev/null || {
   go get -u github.com/fzipp/gocyclo
 }
 
+[[ -n "$SDLC_GO_VENDOR" ]] && {
+  echo 'Detected Go vendor mode: set GOPROXY=off'
+  export GOPROXY='off'
+}
+
 cd "${PRJ_HOME}"
 
 # for dir in $(find "$LIB_DIR" -mindepth 1 -maxdepth 1 -type d); do
@@ -60,11 +65,11 @@ cd "${PRJ_HOME}"
 #   echo "===  Process lib ${app_name} [${dir}]"
 #   cd "$dir"
   echo "--- golint"
-  diff <(golint .) <(printf "")
+  diff <(golint ./...) <(printf "")
   echo "--- go fmt"
-  go fmt ./...
+  go fmt -mod vendor ./...
   echo "--- go vet"
-  go vet ./...
+  go vet -mod vendor ./...
   echo "--- goimports"
   goimports -w .
   diff <(goimports -d .) <(printf "")
@@ -74,8 +79,8 @@ cd "${PRJ_HOME}"
   # echo "--- go build"
   # cd "$dir"
   echo "--- go test"
-  go test -race ./...
-  go test -cover ./...
+  go test -mod vendor -race ./...
+  go test -mod vendor -cover ./...
 # done
 #
 # for dir in $(find "$CMDS_DIR" -mindepth 1 -maxdepth 1 -type d); do
