@@ -46,12 +46,12 @@ hash golint 2>/dev/null || {
 }
 
 hash goimports 2>/dev/null || {
-  go get -u golang.org/x/tools/cmd/goimports
-  #go install golang.org/x/tools/cmd/goimports@latest
+  # go get -u golang.org/x/tools/cmd/goimports
+  go install golang.org/x/tools/cmd/goimports@latest
 }
 
 hash gocyclo 2>/dev/null || {
-  go get -u github.com/fzipp/gocyclo
+  go install github.com/fzipp/gocyclo/cmd/gocyclo@latest
 }
 
 [[ -n "$SDLC_GO_VENDOR" ]] && {
@@ -64,7 +64,7 @@ cd "${PRJ_HOME}"
 echo '---'
 echo $PATH
 echo '---'
-ls -al $GOPATH
+ls -al "${GOPATH}/bin"
 echo '---'
 
 # for dir in $(find "$LIB_DIR" -mindepth 1 -maxdepth 1 -type d); do
