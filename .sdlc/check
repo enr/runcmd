@@ -47,6 +47,7 @@ hash golint 2>/dev/null || {
 
 hash goimports 2>/dev/null || {
   go get -u golang.org/x/tools/cmd/goimports
+  #go install golang.org/x/tools/cmd/goimports@latest
 }
 
 hash gocyclo 2>/dev/null || {
@@ -59,6 +60,12 @@ hash gocyclo 2>/dev/null || {
 }
 
 cd "${PRJ_HOME}"
+
+echo '---'
+echo $PATH
+echo '---'
+ls -al $GOPATH
+echo '---'
 
 # for dir in $(find "$LIB_DIR" -mindepth 1 -maxdepth 1 -type d); do
 #   app_name=$(basename "$dir")
