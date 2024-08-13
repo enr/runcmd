@@ -34,7 +34,7 @@ func failIfErr(err error) {
 	}
 }
 
-func mockCmdOutput(cmdName, stdout string, stderr string, exitCode int) {
+func mockCmdOutput(cmdName, stdout string, stderr string, exitCode int) string {
 	err := os.MkdirAll("build", os.ModePerm)
 	failIfErr(err)
 
@@ -73,9 +73,11 @@ func mockCmdOutput(cmdName, stdout string, stderr string, exitCode int) {
 	err = fakeBin.Close()
 	failIfErr(err)
 
-	newPath := fmt.Sprintf("%s%c%s", tmpDir, os.PathListSeparator, os.Getenv("PATH"))
-	err = os.Setenv("PATH", newPath)
-	failIfErr(err)
+	// newPath := fmt.Sprintf("%s%c%s", tmpDir, os.PathListSeparator, os.Getenv("PATH"))
+	// err = os.Setenv("PATH", newPath)
+	// failIfErr(err)
+
+	return pathToFakeBin
 }
 
 type commandRunTestCase struct {
@@ -106,10 +108,10 @@ var testCommandRun = []commandRunTestCase{
 func TestCommandRun(t *testing.T) {
 
 	for _, c := range testCommandRun {
-		mockCmdOutput(c.executable, c.stdout, c.stderr, c.exitCode)
+		exe := mockCmdOutput(c.executable, c.stdout, c.stderr, c.exitCode)
 
 		command := &Command{
-			Exe: c.executable,
+			Exe: exe,
 		}
 		res := command.Run()
 
@@ -129,10 +131,10 @@ func TestCommandRun(t *testing.T) {
 func TestCommandStart(t *testing.T) {
 
 	for _, c := range testCommandRun {
-		mockCmdOutput(c.executable, c.stdout, c.stderr, c.exitCode)
+		exe := mockCmdOutput(c.executable, c.stdout, c.stderr, c.exitCode)
 
 		command := &Command{
-			Exe: c.executable,
+			Exe: exe,
 		}
 		err := command.Start()
 

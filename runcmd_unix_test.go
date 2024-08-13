@@ -1,3 +1,4 @@
+//go:build darwin || freebsd || linux || netbsd || openbsd
 // +build darwin freebsd linux netbsd openbsd
 
 package runcmd
@@ -68,7 +69,7 @@ var executions = []commandExecution{
 		},
 		success:  false,
 		exitCode: 127,
-		stderr:   "/bin/bash: /not/found/here: No such file or directory",
+		stderr:   "/not/found/here: No such file or directory",
 	},
 	{
 		command: &Command{
