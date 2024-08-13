@@ -42,11 +42,10 @@ echo "Environment PATH=${PATH}"
 }
 
 hash golint 2>/dev/null || {
-  go get -u golang.org/x/lint/golint
+  go install golang.org/x/lint/golint@latest
 }
 
 hash goimports 2>/dev/null || {
-  # go get -u golang.org/x/tools/cmd/goimports
   go install golang.org/x/tools/cmd/goimports@latest
 }
 
