@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
 func (c *Command) useShell() {
@@ -26,8 +27,11 @@ func (c *Command) useShell() {
 	var shellCommand string
 	if c.UseProfile {
 		profile := filepath.Join(c.WorkingDir, ".profile")
+		// Single-quote the path so shell metacharacters in WorkingDir can't inject commands.
+		// Any literal single quotes in the path are escaped as '\''.
+		escapedProfile := "'" + strings.ReplaceAll(profile, "'", `'\''`) + "'"
 		// "." is portable, "source" is bash only
-		shellCommand = fmt.Sprintf(". \"%s\" 2>/dev/null; %s", profile, command)
+		shellCommand = fmt.Sprintf(". %s 2>/dev/null; %s", escapedProfile, command)
 	} else {
 		shellCommand = command
 	}
