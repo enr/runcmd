@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
-	"path"
 	"path/filepath"
 	"runtime"
 	"strings"
@@ -36,6 +35,8 @@ type Command struct {
 	Logfile string
 	// the underlying process
 	Process *os.Process
+	// logFile holds the open handle for the process log, set by Start.
+	logFile *os.File
 }
 
 func (c *Command) String() string {
@@ -77,7 +78,7 @@ func (c *Command) GetLogfile() string {
 		ln = fmt.Sprintf(`%s-%d`, ln[0:60], time.Now().UnixNano())
 	}
 	logname := fmt.Sprintf("runcmd-%s.log", ln)
-	fullpath := path.Join(os.TempDir(), logname)
+	fullpath := filepath.Join(os.TempDir(), logname)
 	return fullpath
 }
 
@@ -103,24 +104,33 @@ func (c *Command) Run() *ExecResult {
 		cmd.Dir = c.WorkingDir
 	}
 
-	if c.UseEnv {
-		flagEnv := filepath.Join(cmd.Dir, ".env")
-		env, _ := readEnv(flagEnv)
-		cmd.Env = env.asArray()
-	} else if len(c.Env) > 0 {
-		cmd.Env = c.Env.asArray()
-	}
-	// On Windows, clearing the environment,
-	// or having missing environment variables, may lead to powershell errors.
-	if runtime.GOOS == "windows" {
-		cmd.Env = mergeEnvironment(cmd.Env)
-	}
+	cmd.Env = c.prepareEnv(cmd.Dir)
 
 	if err := cmd.Run(); err != nil {
 		result.err = err
 		return result
 	}
 	return result
+}
+
+// prepareEnv builds the environment slice for cmd.Env.
+// Returns nil when no custom environment is configured, which tells os/exec to
+// inherit the parent process environment unchanged.
+// On Windows it always merges with the host environment so that variables like
+// TEMP and SYSTEMROOT are never absent (required by PowerShell and os.TempDir).
+func (c *Command) prepareEnv(dir string) []string {
+	var env []string
+	if c.UseEnv {
+		flagEnv := filepath.Join(dir, ".env")
+		e, _ := readEnv(flagEnv)
+		env = e.asArray()
+	} else if len(c.Env) > 0 {
+		env = c.Env.asArray()
+	}
+	if runtime.GOOS == "windows" {
+		env = mergeEnvironment(env)
+	}
+	return env
 }
 
 func (c *Command) buildCmd() (*exec.Cmd, error) {

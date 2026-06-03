@@ -47,3 +47,25 @@ func TestHugeLogName(t *testing.T) {
 	}
 
 }
+
+func TestCommandString(t *testing.T) {
+	cmd := &Command{
+		WorkingDir: "/tmp",
+		Exe:        "/bin/echo",
+		Args:       []string{"hello"},
+	}
+	s := cmd.String()
+	if !strings.Contains(s, "/tmp") {
+		t.Fatalf("String() should contain WorkingDir, got: %s", s)
+	}
+	if !strings.Contains(s, "/bin/echo") {
+		t.Fatalf("String() should contain exe, got: %s", s)
+	}
+}
+
+func TestGetNameExplicit(t *testing.T) {
+	cmd := &Command{Name: "my-custom-name"}
+	if got := cmd.GetName(); got != "my-custom-name" {
+		t.Fatalf("GetName: expected %q, got %q", "my-custom-name", got)
+	}
+}

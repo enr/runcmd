@@ -33,7 +33,7 @@ var testdata = []ccli{
 			UseProfile:  true,
 			ForceShell:  "/bin/bash",
 		},
-		cli: `/bin/bash -c . ".profile" 2>/dev/null; echo "home=${HOME}"`,
+		cli: `/bin/bash -c . '.profile' 2>/dev/null; echo "home=${HOME}"`,
 	},
 }
 

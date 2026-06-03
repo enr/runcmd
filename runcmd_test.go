@@ -151,3 +151,25 @@ func TestCommandStart(t *testing.T) {
 		}
 	}
 }
+
+func TestExecResultString(t *testing.T) {
+	exe := mockCmdOutput("strtest-ok", "out", "err", 0)
+	res := (&Command{Exe: exe}).Run()
+	assertStringContains(t, res.String(), "success")
+
+	exe2 := mockCmdOutput("strtest-fail", "out", "err", 1)
+	res2 := (&Command{Exe: exe2}).Run()
+	assertStringContains(t, res2.String(), "error")
+}
+
+func TestExecResultError(t *testing.T) {
+	exe := mockCmdOutput("errtest-ok", "", "", 0)
+	if err := (&Command{Exe: exe}).Run().Error(); err != nil {
+		t.Fatalf("Error() should be nil on success, got: %v", err)
+	}
+
+	exe2 := mockCmdOutput("errtest-fail", "", "", 1)
+	if err := (&Command{Exe: exe2}).Run().Error(); err == nil {
+		t.Fatal("Error() should be non-nil on failure")
+	}
+}
